@@ -5,6 +5,15 @@ using PAS.API.Repositories;
 
 var builder = WebApplication.CreateBuilder(args);
 
+builder.Services.AddCors((options) => {
+    options.AddPolicy("AngularApplication", (builder) => {
+        builder.WithOrigins("http://localhost:4200")
+            .AllowAnyHeader()
+            .WithMethods("GET", "POST", "PUT", "DELETE")
+            .WithExposedHeaders("*");
+    });
+});
+
 builder.Services.AddControllers();
 
 builder.Services.AddDbContext<Context>(options => 
@@ -24,6 +33,8 @@ if (app.Environment.IsDevelopment())
     app.UseSwagger();
     app.UseSwaggerUI();
 }
+
+app.UseCors("AngularApplication");
 
 app.UseHttpsRedirection();
 

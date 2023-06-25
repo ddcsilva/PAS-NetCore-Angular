@@ -10,11 +10,13 @@ namespace PAS.API.Controllers;
 public class EstudantesController : Controller
 {
     private readonly IEstudanteRepository _estudanteRepository;
+    private readonly IImagemRepository _imagemRepository;
     private readonly IMapper _mapper;
 
-    public EstudantesController(IEstudanteRepository estudanteRepository, IMapper mapper)
+    public EstudantesController(IEstudanteRepository estudanteRepository, IImagemRepository imagemRepository, IMapper mapper)
     {
         _estudanteRepository = estudanteRepository;
+        _imagemRepository = imagemRepository;
         _mapper = mapper;
     }
 
@@ -46,6 +48,27 @@ public class EstudantesController : Controller
     {
         var estudante = await _estudanteRepository.AdicionarEstudanteAsync(_mapper.Map<Estudante>(estudanteViewModel));
         return CreatedAtAction(nameof(ObterEstudanteAsync), new { estudanteId = estudante.Id }, _mapper.Map<Estudante>(estudante));
+    }
+
+    [HttpPost]
+    [Route("[controller]/{estudanteId:guid}/upload-imagem")]
+    public async Task<IActionResult> UploadImagemAsync([FromRoute] Guid estudanteId, IFormFile imagemPerfil)
+    {
+        if (!await _estudanteRepository.Existe(estudanteId))
+        {
+            return NotFound();
+        }
+
+        var nomeArquivo = Guid.NewGuid() + Path.GetExtension(imagemPerfil.FileName);
+
+        var caminhoImagem = await _imagemRepository.Upload(imagemPerfil, nomeArquivo);
+
+        if (!await _estudanteRepository.AtualizarImagemPerfilAsync(estudanteId, caminhoImagem))
+        {
+            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar imagem de perfil do estudante.");
+        }
+
+        return Ok(caminhoImagem);
     }
 
     [HttpPut]

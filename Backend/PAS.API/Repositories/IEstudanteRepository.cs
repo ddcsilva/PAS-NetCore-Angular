@@ -11,5 +11,6 @@ public interface IEstudanteRepository
     Task<bool> Existe(Guid estudanteId);
     Task<Estudante> AdicionarEstudanteAsync(Estudante estudante);
     Task<Estudante> AtualizarEstudanteAsync(Guid estudanteId, Estudante estudante);
+    Task<bool> AtualizarImagemPerfilAsync(Guid estudanteId, string caminhoImagem);
     Task<Estudante> ExcluirEstudanteAsync(Guid estudanteId);
 }

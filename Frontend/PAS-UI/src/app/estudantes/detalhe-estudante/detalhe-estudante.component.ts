@@ -34,11 +34,12 @@ export class DetalheEstudanteComponent implements OnInit {
   };
   novoEstudante: boolean = false;
   titulo: string = '';
+  imagemPerfilUrl: string = '';
 
   listaGeneros: Genero[] = [];
 
   constructor(
-    private readonly estudanteService: EstudanteService, 
+    private readonly estudanteService: EstudanteService,
     private readonly generoService: GeneroService,
     private readonly route: ActivatedRoute,
     private readonly router: Router,
@@ -53,6 +54,7 @@ export class DetalheEstudanteComponent implements OnInit {
           if (this.estudanteId.toLocaleLowerCase() === 'Novo'.toLocaleLowerCase()) {
             this.novoEstudante = true;
             this.titulo = 'Novo Estudante';
+            this.definirImagem();
           } else {
             this.novoEstudante = false;
             this.titulo = 'Editar Estudante';
@@ -60,6 +62,10 @@ export class DetalheEstudanteComponent implements OnInit {
             this.estudanteService.obterEstudante(this.estudanteId).subscribe({
               next: (response) => {
                 this.estudante = response;
+                this.definirImagem();
+              },
+              error: (error) => {
+                this.definirImagem();
               }
             })
           }
@@ -119,5 +125,33 @@ export class DetalheEstudanteComponent implements OnInit {
         console.log(error);
       }
     })
+  }
+
+  uploadImagem(event: any): void {
+    if(this.estudanteId) {
+      const arquivo: File = event.target.files[0];
+      this.estudanteService.uploadImagem(this.estudanteId, arquivo).subscribe({
+        next: (response) => {
+          this.estudante.imagemPerfilUrl = response;
+          this.definirImagem();
+
+          this.snackbar.open('Imagem atualizada com sucesso!', 'Fechar', {
+            duration: 2000
+          });
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
+    }
+  }
+
+  private definirImagem(): void {
+    if (this.estudante.imagemPerfilUrl) {
+      this.imagemPerfilUrl = this.estudanteService.obterCaminhoImagem(this.estudante.imagemPerfilUrl);
+    }
+    else {
+      this.imagemPerfilUrl = '/assets/images/sem-imagem.png';
+    }
   }
 }

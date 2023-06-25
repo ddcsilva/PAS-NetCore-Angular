@@ -1,4 +1,5 @@
 using Microsoft.EntityFrameworkCore;
+using Microsoft.Extensions.FileProviders;
 using PAS.API.Models;
 using PAS.API.Profiles;
 using PAS.API.Repositories;
@@ -20,6 +21,7 @@ builder.Services.AddDbContext<Context>(options =>
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));
 
 builder.Services.AddScoped<IEstudanteRepository, EstudanteRepository>();
+builder.Services.AddScoped<IImagemRepository, ImagemLocalStorageRepository>();
 
 builder.Services.AddEndpointsApiExplorer();
 builder.Services.AddSwaggerGen();
@@ -37,6 +39,12 @@ if (app.Environment.IsDevelopment())
 app.UseCors("AngularApplication");
 
 app.UseHttpsRedirection();
+
+app.UseStaticFiles(new StaticFileOptions
+{
+    FileProvider = new PhysicalFileProvider(Path.Combine(Directory.GetCurrentDirectory(), "Resources")),
+    RequestPath = new PathString("/Resources")
+});
 
 app.UseAuthorization();
 

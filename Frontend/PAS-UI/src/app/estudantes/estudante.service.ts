@@ -55,4 +55,17 @@ export class EstudanteService {
   excluirEstudante(estudanteId: string): Observable<Estudante> {
     return this.httpClient.delete<Estudante>(this.urlBaseApi + '/estudantes/' + estudanteId);
   }
+
+  uploadImagem(estudanteId: string, arquivo: File): Observable<string> {
+    const formData = new FormData();
+    formData.append('imagemPerfil', arquivo);
+
+    return this.httpClient.post(this.urlBaseApi + '/estudantes/' + estudanteId + '/upload-imagem', formData, {
+      responseType: 'text'
+    });
+  }
+
+  obterCaminhoImagem(caminhoRelativo: string): string {
+    return `${this.urlBaseApi}/${caminhoRelativo}`
+  }
 }

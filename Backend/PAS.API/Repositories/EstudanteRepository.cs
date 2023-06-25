@@ -61,6 +61,20 @@ public class EstudanteRepository : IEstudanteRepository
         return null;
     }
 
+    public async Task<bool> AtualizarImagemPerfilAsync(Guid estudanteId, string caminhoImagem)
+    {
+        var estudanteEncontrado = await ObterEstudanteAsync(estudanteId);
+
+        if (estudanteEncontrado != null)
+        {
+            estudanteEncontrado.ImagemPerfilUrl = caminhoImagem;
+            await _context.SaveChangesAsync();
+            return true;
+        }
+
+        return false;
+    }
+
     public async Task<Estudante> ExcluirEstudanteAsync(Guid estudanteId)
     {
         var estudanteEncontrado = await ObterEstudanteAsync(estudanteId);

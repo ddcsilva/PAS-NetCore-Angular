@@ -100,10 +100,18 @@
                 </div>
             </form>
         </div>
-
         <div class="col-xs-6">
-            <!-- Foto do Perfil -->
-
+            <div class="row center-xs">
+                <div class="image-container">
+                    <img [src]="imagemPerfilUrl" alt="Foto do Estudante" />
+                </div>
+            </div>
+            <div class="row">
+                <div class="col-xs-12 row center-xs mt-1" *ngIf="!novoEstudante">
+                    <input hidden type="file" #imagemUpload (change)="uploadImagem($event)" />
+                    <button mat-raised-button color="primary" (click)="imagemUpload.click()">Alterar Foto</button>
+                </div>
+            </div>
         </div>
     </div>
 </div>

@@ -2,6 +2,9 @@ import { Component, OnInit } from '@angular/core';
 import { EstudanteService } from '../estudante.service';
 import { ActivatedRoute } from '@angular/router';
 import { Estudante } from 'src/app/models/estudante.model';
+import { GeneroService } from 'src/app/services/genero.service';
+import { Genero } from 'src/app/models/genero.model';
+import { MatSnackBar } from '@angular/material/snack-bar';
 
 @Component({
   selector: 'app-detalhe-estudante',
@@ -30,7 +33,13 @@ export class DetalheEstudanteComponent implements OnInit {
     }
   }
 
-  constructor(private readonly estudanteService: EstudanteService, private readonly route: ActivatedRoute) { }
+  listaGeneros: Genero[] = [];
+
+  constructor(
+    private readonly estudanteService: EstudanteService, 
+    private readonly generoService: GeneroService,
+    private readonly route: ActivatedRoute,
+    private snackbar: MatSnackBar) { }
 
   ngOnInit(): void {
     this.route.paramMap.subscribe(
@@ -41,13 +50,29 @@ export class DetalheEstudanteComponent implements OnInit {
           this.estudanteService.obterEstudante(this.estudanteId).subscribe({
             next: (response) => {
               this.estudante = response;
-            },
-            error: (error) => {
-              console.log(error);
+            }
+          })
+
+          this.generoService.obterGeneros().subscribe({
+            next: (response) => {
+              this.listaGeneros = response;
             }
           })
         }
       }
     )
+  }
+
+  atualizar(): void {
+    this.estudanteService.atualizarEstudante(this.estudante.id, this.estudante).subscribe({
+      next: (response) => {
+        this.snackbar.open('Estudante atualizado com sucesso!', 'Fechar', {
+          duration: 3000
+        });
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 }

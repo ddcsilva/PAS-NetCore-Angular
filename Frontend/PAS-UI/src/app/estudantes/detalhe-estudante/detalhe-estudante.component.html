@@ -36,7 +36,8 @@
                     <div class="col-xs-12">
                         <mat-form-field appearance="outline">
                             <mat-label>Data de Nascimento</mat-label>
-                            <input [matDatepicker]="picker" [(ngModel)]="estudante.dataNascimento" name="dataNascimento" matInput>
+                            <input [matDatepicker]="picker" [(ngModel)]="estudante.dataNascimento" name="dataNascimento"
+                                matInput>
                             <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
                             <mat-datepicker #picker></mat-datepicker>
                         </mat-form-field>
@@ -60,7 +61,11 @@
                     <div class="col-xs-12">
                         <mat-form-field appearance="outline">
                             <mat-label>Gênero</mat-label>
-                            <input type="text" [(ngModel)]="estudante.genero.descricao" name="genero" matInput>
+                            <mat-select [(ngModel)]="estudante.generoId" name="genero">
+                                <mat-option *ngFor="let genero of listaGeneros" [value]="genero.id">
+                                    {{genero.descricao}}
+                                </mat-option>
+                            </mat-select>
                         </mat-form-field>
                     </div>
                 </div>
@@ -68,17 +73,23 @@
                     <div class="col-xs-12">
                         <mat-form-field appearance="outline">
                             <mat-label>Endereço Físico</mat-label>
-                            <textarea matInput [(ngModel)]="estudante.endereco.enderecoFisico" name="enderecoFisico"></textarea>
+                            <textarea matInput [(ngModel)]="estudante.endereco.enderecoFisico"
+                                name="enderecoFisico"></textarea>
                         </mat-form-field>
                     </div>
                 </div>
-
                 <div class="row">
                     <div class="col-xs-12">
                         <mat-form-field appearance="outline">
                             <mat-label>Endereço Postal</mat-label>
-                            <textarea matInput [(ngModel)]="estudante.endereco.enderecoPostal" name="enderecoPostal"></textarea>
+                            <textarea matInput [(ngModel)]="estudante.endereco.enderecoPostal"
+                                name="enderecoPostal"></textarea>
                         </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <button mat-raised-button color="primary" (click)="atualizar()">Salvar</button>
                     </div>
                 </div>
             </form>
@@ -86,7 +97,7 @@
 
         <div class="col-xs-6">
             <!-- Foto do Perfil -->
-            
+
         </div>
     </div>
 </div>

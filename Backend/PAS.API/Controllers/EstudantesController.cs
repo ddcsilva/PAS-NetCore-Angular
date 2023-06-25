@@ -24,4 +24,18 @@ public class EstudantesController : Controller
         var estudantes = await _estudanteRepository.ObterEstudadesAsync();
         return Ok(_mapper.Map<List<EstudanteViewModel>>(estudantes));
     }
+
+    [HttpGet]
+    [Route("[controller]/{estudanteId:guid}")]
+    public async Task<IActionResult> ObterEstudanteAsync([FromRoute] Guid estudanteId)
+    {
+        var estudante = await _estudanteRepository.ObterEstudanteAsync(estudanteId);
+        
+        if (estudante == null)
+        {
+            return NotFound();
+        }
+
+        return Ok(_mapper.Map<EstudanteViewModel>(estudante));
+    }
 }

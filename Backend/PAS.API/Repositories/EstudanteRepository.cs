@@ -16,4 +16,9 @@ public class EstudanteRepository : IEstudanteRepository
     {
         return await _context.Estudantes.Include(nameof(Genero)).Include(nameof(Endereco)).ToListAsync();
     }
+
+    public async Task<Estudante> ObterEstudanteAsync(Guid estudanteId)
+    {
+        return await _context.Estudantes.Include(nameof(Genero)).Include(nameof(Endereco)).FirstOrDefaultAsync(x => x.Id == estudanteId);
+    }
 }

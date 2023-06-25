@@ -27,7 +27,7 @@ public class EstudantesController : Controller
     }
 
     [HttpGet]
-    [Route("[controller]/{estudanteId:guid}")]
+    [Route("[controller]/{estudanteId:guid}"), ActionName(nameof(ObterEstudanteAsync))]
     public async Task<IActionResult> ObterEstudanteAsync([FromRoute] Guid estudanteId)
     {
         var estudante = await _estudanteRepository.ObterEstudanteAsync(estudanteId);
@@ -40,16 +40,24 @@ public class EstudantesController : Controller
         return Ok(_mapper.Map<EstudanteViewModel>(estudante));
     }
 
+    [HttpPost]
+    [Route("[controller]/adicionar")]
+    public async Task<IActionResult> AdicionarEstudanteAsync([FromBody] AdicionarEstudanteViewModel estudanteViewModel)
+    {
+        var estudante = await _estudanteRepository.AdicionarEstudanteAsync(_mapper.Map<Estudante>(estudanteViewModel));
+        return CreatedAtAction(nameof(ObterEstudanteAsync), new { estudanteId = estudante.Id }, _mapper.Map<Estudante>(estudante));
+    }
+
     [HttpPut]
     [Route("[controller]/{estudanteId:guid}")]
-    public async Task<IActionResult> AtualizarEstudanteAsync([FromRoute] Guid estudanteId, [FromBody] AtualizarEstudanteViewModel request)
+    public async Task<IActionResult> AtualizarEstudanteAsync([FromRoute] Guid estudanteId, [FromBody] AtualizarEstudanteViewModel estudanteViewModel)
     {
         if (!await _estudanteRepository.Existe(estudanteId))
         {
             return NotFound();
         }
 
-        var estudanteAtualizado = await _estudanteRepository.AtualizarEstudanteAsync(estudanteId, _mapper.Map<Estudante>(request));
+        var estudanteAtualizado = await _estudanteRepository.AtualizarEstudanteAsync(estudanteId, _mapper.Map<Estudante>(estudanteViewModel));
 
         if (estudanteAtualizado == null)
         {

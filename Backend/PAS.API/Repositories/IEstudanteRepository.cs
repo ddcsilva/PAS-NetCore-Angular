@@ -9,6 +9,7 @@ public interface IEstudanteRepository
 
     Task<List<Genero>> ObterGenerosAsync();
     Task<bool> Existe(Guid estudanteId);
+    Task<Estudante> AdicionarEstudanteAsync(Estudante estudante);
     Task<Estudante> AtualizarEstudanteAsync(Guid estudanteId, Estudante estudante);
     Task<Estudante> ExcluirEstudanteAsync(Guid estudanteId);
 }

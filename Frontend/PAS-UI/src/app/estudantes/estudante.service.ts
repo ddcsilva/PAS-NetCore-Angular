@@ -3,6 +3,7 @@ import { HttpClient } from '@angular/common/http';
 import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Estudante } from '../models/estudante.model';
+import { AdicionarEstudanteRequest } from '../models/adicionar-estudante-request.model';
 
 @Injectable({
   providedIn: 'root'
@@ -19,6 +20,21 @@ export class EstudanteService {
 
   obterEstudante(estudanteId: string): Observable<Estudante> {
     return this.httpClient.get<Estudante>(this.urlBaseApi + '/estudantes/' + estudanteId);
+  }
+
+  adicionarEstudante(estudanteRequest: Estudante): Observable<Estudante> {
+    const adicionarEstudanteRequest: AdicionarEstudanteRequest = {
+      nome: estudanteRequest.nome,
+      sobrenome: estudanteRequest.sobrenome,
+      dataNascimento: estudanteRequest.dataNascimento,
+      email: estudanteRequest.email,
+      telefone: estudanteRequest.telefone,
+      generoId: estudanteRequest.generoId,
+      enderecoFisico: estudanteRequest.endereco.enderecoFisico,
+      enderecoPostal: estudanteRequest.endereco.enderecoPostal
+    }
+
+    return this.httpClient.post<Estudante>(this.urlBaseApi + '/estudantes/adicionar', adicionarEstudanteRequest);
   }
 
   atualizarEstudante(estudanteId: string, estudanteRequest: Estudante): Observable<Estudante> {

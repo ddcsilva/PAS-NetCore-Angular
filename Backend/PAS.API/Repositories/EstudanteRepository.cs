@@ -32,6 +32,13 @@ public class EstudanteRepository : IEstudanteRepository
         return await _context.Estudantes.AnyAsync(x => x.Id == estudanteId);
     }
 
+    public async Task<Estudante> AdicionarEstudanteAsync(Estudante estudante)
+    {
+        var estudanteAdicionado = await _context.Estudantes.AddAsync(estudante);
+        await _context.SaveChangesAsync();
+        return estudanteAdicionado.Entity;
+    }
+
     public async Task<Estudante> AtualizarEstudanteAsync(Guid estudanteId, Estudante estudante)
     {
         var estudanteEncontrado = await ObterEstudanteAsync(estudanteId);

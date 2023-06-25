@@ -31,7 +31,9 @@ export class DetalheEstudanteComponent implements OnInit {
       enderecoFisico: '',
       enderecoPostal: ''
     }
-  }
+  };
+  novoEstudante: boolean = false;
+  titulo: string = '';
 
   listaGeneros: Genero[] = [];
 
@@ -48,11 +50,19 @@ export class DetalheEstudanteComponent implements OnInit {
         this.estudanteId = params.get('id');
 
         if (this.estudanteId) {
-          this.estudanteService.obterEstudante(this.estudanteId).subscribe({
-            next: (response) => {
-              this.estudante = response;
-            }
-          })
+          if (this.estudanteId.toLocaleLowerCase() === 'Novo'.toLocaleLowerCase()) {
+            this.novoEstudante = true;
+            this.titulo = 'Novo Estudante';
+          } else {
+            this.novoEstudante = false;
+            this.titulo = 'Editar Estudante';
+
+            this.estudanteService.obterEstudante(this.estudanteId).subscribe({
+              next: (response) => {
+                this.estudante = response;
+              }
+            })
+          }
 
           this.generoService.obterGeneros().subscribe({
             next: (response) => {
@@ -62,6 +72,23 @@ export class DetalheEstudanteComponent implements OnInit {
         }
       }
     )
+  }
+
+  adicionar(): void {
+    this.estudanteService.adicionarEstudante(this.estudante).subscribe({
+      next: (response) => {
+        this.snackbar.open('Estudante adicionado com sucesso!', 'Fechar', {
+          duration: 2000
+        });
+
+        setTimeout(() => {
+          this.router.navigateByUrl('estudantes');
+        }, 2000);
+      },
+      error: (error) => {
+        console.log(error);
+      }
+    })
   }
 
   atualizar(): void {

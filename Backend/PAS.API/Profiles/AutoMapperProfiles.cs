@@ -15,6 +15,9 @@ namespace PAS.API.Profiles
 
             CreateMap<AtualizarEstudanteViewModel, Estudante>()
                 .AfterMap<AtualizarEstudanteAfterMap>();
+
+            CreateMap<AdicionarEstudanteViewModel, Estudante>()
+                .AfterMap<AdicionarEstudanteAfterMap>();
         }
     }
 }

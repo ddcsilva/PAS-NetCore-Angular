@@ -49,12 +49,14 @@ import { TopNavComponent } from './layout/top-nav/top-nav.component';
 import { EstudantesComponent } from './estudantes/estudantes.component';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule } from '@angular/forms';
+import { DetalheEstudanteComponent } from './estudantes/detalhe-estudante/detalhe-estudante.component';
 
 @NgModule({
   declarations: [
     AppComponent,
     TopNavComponent,
-    EstudantesComponent
+    EstudantesComponent,
+    DetalheEstudanteComponent
   ],
   imports: [
     FormsModule,

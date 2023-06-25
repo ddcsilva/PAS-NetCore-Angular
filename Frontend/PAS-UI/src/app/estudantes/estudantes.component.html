@@ -50,6 +50,16 @@
                 <td mat-cell *matCellDef="let estudante"> {{estudante.genero.descricao}} </td>
             </ng-container>
 
+            <!-- Coluna - Editar -->
+            <ng-container matColumnDef="editar">
+                <th mat-header-cell *matHeaderCellDef> </th>
+                <td mat-cell *matCellDef="let estudante">
+                    <a [routerLink]="['/estudantes', estudante.id]">
+                        <mat-icon color="primary">edit</mat-icon>
+                    </a>
+                </td>
+            </ng-container>
+
             <tr mat-header-row *matHeaderRowDef="colunas"></tr>
             <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
         </table>

@@ -8,11 +8,15 @@ import { Estudante } from '../models/estudante.model';
 })
 export class EstudanteService {
 
-  private urlBaseApi  = 'https://localhost:7132/';
+  private urlBaseApi  = 'https://localhost:7132';
 
   constructor(private httpClient: HttpClient) { }
 
   obterEstudantes(): Observable<Estudante[]> {
-    return this.httpClient.get<Estudante[]>(this.urlBaseApi + 'estudantes');
+    return this.httpClient.get<Estudante[]>(this.urlBaseApi + '/estudantes');
+  }
+
+  obterEstudante(estudanteId: string): Observable<Estudante> {
+    return this.httpClient.get<Estudante>(this.urlBaseApi + '/estudantes/' + estudanteId);
   }
 }

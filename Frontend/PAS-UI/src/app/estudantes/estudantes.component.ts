@@ -12,7 +12,7 @@ import { MatSort } from '@angular/material/sort';
 })
 export class EstudantesComponent implements OnInit {
   estudantes: Estudante[] = [];
-  colunas: string[] = ['nome', 'sobrenome', 'dataNascimento', 'email', 'telefone', 'genero'];
+  colunas: string[] = ['nome', 'sobrenome', 'dataNascimento', 'email', 'telefone', 'genero', 'editar'];
   dataSource: MatTableDataSource<Estudante> = new MatTableDataSource<Estudante>();
 
   @ViewChild(MatPaginator) paginator!: MatPaginator;

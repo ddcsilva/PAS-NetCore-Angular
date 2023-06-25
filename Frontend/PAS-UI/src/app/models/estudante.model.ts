@@ -5,7 +5,7 @@ export interface Estudante {
     id: string;
     nome: string;
     sobrenome: string;
-    dataNascimento: Date;
+    dataNascimento: string;
     email: string;
     telefone: number;
     imagemPerfilUrl: string;

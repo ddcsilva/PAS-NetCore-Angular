@@ -1,0 +1,92 @@
+<div class="page-header">
+    <div class="container">
+        <h1>Detalhes do Estudante</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row top-row">
+        <div class="col-xs-12 row end-xs">
+            <a routerLink="/estudantes" color="primary" mat-raised-button>
+                <mat-icon>chevron_left</mat-icon>
+                Voltar
+            </a>
+        </div>
+    </div>
+
+    <div class="row">
+        <div class="col-xs-6">
+            <!-- Detalhes do Estudante -->
+            <form #formularioDetalhesEstudante="ngForm">
+                <div class="row">
+                    <div class="col-xs-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Nome</mat-label>
+                            <input type="text" [(ngModel)]="estudante.nome" name="nome" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xs-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Sobrenome</mat-label>
+                            <input type="text" [(ngModel)]="estudante.sobrenome" name="sobrenome" matInput>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Data de Nascimento</mat-label>
+                            <input [matDatepicker]="picker" [(ngModel)]="estudante.dataNascimento" name="dataNascimento" matInput>
+                            <mat-datepicker-toggle matSuffix [for]="picker"></mat-datepicker-toggle>
+                            <mat-datepicker #picker></mat-datepicker>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>E-mail</mat-label>
+                            <input type="text" [(ngModel)]="estudante.email" name="email" matInput>
+                        </mat-form-field>
+                    </div>
+                    <div class="col-xs-6">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Telefone</mat-label>
+                            <input type="number" [(ngModel)]="estudante.telefone" name="telefone" matInput>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Gênero</mat-label>
+                            <input type="text" [(ngModel)]="estudante.genero.descricao" name="genero" matInput>
+                        </mat-form-field>
+                    </div>
+                </div>
+                <div class="row">
+                    <div class="col-xs-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Endereço Físico</mat-label>
+                            <textarea matInput [(ngModel)]="estudante.endereco.enderecoFisico" name="enderecoFisico"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+
+                <div class="row">
+                    <div class="col-xs-12">
+                        <mat-form-field appearance="outline">
+                            <mat-label>Endereço Postal</mat-label>
+                            <textarea matInput [(ngModel)]="estudante.endereco.enderecoPostal" name="enderecoPostal"></textarea>
+                        </mat-form-field>
+                    </div>
+                </div>
+            </form>
+        </div>
+
+        <div class="col-xs-6">
+            <!-- Foto do Perfil -->
+            
+        </div>
+    </div>
+</div>

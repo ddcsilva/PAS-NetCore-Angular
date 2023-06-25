@@ -1,0 +1,59 @@
+<div class="page-header">
+    <div class="container">
+        <h1>Estudantes</h1>
+    </div>
+</div>
+
+<div class="container">
+    <div class="row end-xs mt-1">
+        <div class="col-xs-12">
+            <input type="text" class="campo-pesquisa" placeholder="Pesquisar estudante"
+                [(ngModel)]="filtroEstudante" (keyup)="filtrarEstudantes()">
+        </div>
+    </div>
+
+    <div class="mt-1 mat-elevation-z8">
+        <table mat-table matSort [dataSource]="dataSource" class="">
+            <!-- Coluna - Nome -->
+            <ng-container matColumnDef="nome">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Nome </th>
+                <td mat-cell *matCellDef="let estudante"> {{estudante.nome}} </td>
+            </ng-container>
+
+            <!-- Coluna - Sobrenome -->
+            <ng-container matColumnDef="sobrenome">
+                <th mat-header-cell *matHeaderCellDef mat-sort-header> Sobrenome </th>
+                <td mat-cell *matCellDef="let estudante"> {{estudante.sobrenome}} </td>
+            </ng-container>
+
+            <!-- Coluna - Data de Nascimento -->
+            <ng-container matColumnDef="dataNascimento">
+                <th mat-header-cell *matHeaderCellDef> Data de Nascimento </th>
+                <td mat-cell *matCellDef="let estudante"> {{estudante.dataNascimento | date: 'dd/MM/yyyy'}} </td>
+            </ng-container>
+
+            <!-- Coluna - E-mail -->
+            <ng-container matColumnDef="email">
+                <th mat-header-cell *matHeaderCellDef> E-mail </th>
+                <td mat-cell *matCellDef="let estudante"> {{estudante.email}} </td>
+            </ng-container>
+
+            <!-- Coluna - Telefone -->
+            <ng-container matColumnDef="telefone">
+                <th mat-header-cell *matHeaderCellDef> Telefone </th>
+                <td mat-cell *matCellDef="let estudante"> {{estudante.telefone}} </td>
+            </ng-container>
+
+            <!-- Coluna - Gênero -->
+            <ng-container matColumnDef="genero">
+                <th mat-header-cell *matHeaderCellDef> Gênero </th>
+                <td mat-cell *matCellDef="let estudante"> {{estudante.genero.descricao}} </td>
+            </ng-container>
+
+            <tr mat-header-row *matHeaderRowDef="colunas"></tr>
+            <tr mat-row *matRowDef="let row; columns: colunas;"></tr>
+        </table>
+
+        <mat-paginator [length]="100" [pageSize]="10" [pageSizeOptions]="[5, 10, 25, 100]" aria-label="Selecione a quantidade de registros por página"></mat-paginator>
+    </div>
+</div>

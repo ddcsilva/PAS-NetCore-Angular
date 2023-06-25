@@ -1,5 +1,6 @@
 using AutoMapper;
 using PAS.API.Models;
+using PAS.API.Profiles.AfterMaps;
 using PAS.API.ViewModels;
 
 namespace PAS.API.Profiles
@@ -10,7 +11,10 @@ namespace PAS.API.Profiles
         {
             CreateMap<Estudante, EstudanteViewModel>().ReverseMap();   
             CreateMap<Genero, GeneroViewModel>().ReverseMap();
-            CreateMap<Endereco, EnderecoViewModel>().ReverseMap();         
+            CreateMap<Endereco, EnderecoViewModel>().ReverseMap();
+
+            CreateMap<AtualizarEstudanteViewModel, Estudante>()
+                .AfterMap<AtualizarEstudanteAfterMap>();
         }
     }
 }

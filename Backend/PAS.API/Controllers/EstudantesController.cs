@@ -1,5 +1,6 @@
 using AutoMapper;
 using Microsoft.AspNetCore.Mvc;
+using PAS.API.Models;
 using PAS.API.Repositories;
 using PAS.API.ViewModels;
 
@@ -30,12 +31,31 @@ public class EstudantesController : Controller
     public async Task<IActionResult> ObterEstudanteAsync([FromRoute] Guid estudanteId)
     {
         var estudante = await _estudanteRepository.ObterEstudanteAsync(estudanteId);
-        
+
         if (estudante == null)
         {
             return NotFound();
         }
 
         return Ok(_mapper.Map<EstudanteViewModel>(estudante));
+    }
+
+    [HttpPut]
+    [Route("[controller]/{estudanteId:guid}")]
+    public async Task<IActionResult> AtualizarEstudanteAsync([FromRoute] Guid estudanteId, [FromBody] AtualizarEstudanteViewModel request)
+    {
+        if (!await _estudanteRepository.Existe(estudanteId))
+        {
+            return NotFound();
+        }
+
+        var estudanteAtualizado = await _estudanteRepository.AtualizarEstudanteAsync(estudanteId, _mapper.Map<Estudante>(request));
+
+        if (estudanteAtualizado == null)
+        {
+            return BadRequest();
+        }
+
+        return Ok(_mapper.Map<EstudanteViewModel>(estudanteAtualizado));
     }
 }

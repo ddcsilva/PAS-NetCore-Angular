@@ -58,4 +58,17 @@ public class EstudantesController : Controller
 
         return Ok(_mapper.Map<EstudanteViewModel>(estudanteAtualizado));
     }
+
+    [HttpDelete]
+    [Route("[controller]/{estudanteId:guid}")]
+    public async Task<IActionResult> ExcluirEstudanteAsync([FromRoute] Guid estudanteId)
+    {
+        if (!await _estudanteRepository.Existe(estudanteId))
+        {
+            return NotFound();
+        }
+
+        var estudante = await _estudanteRepository.ExcluirEstudanteAsync(estudanteId);
+        return Ok(_mapper.Map<EstudanteViewModel>(estudante));
+    }
 }

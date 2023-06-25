@@ -35,4 +35,8 @@ export class EstudanteService {
 
     return this.httpClient.put<Estudante>(this.urlBaseApi + '/estudantes/' + estudanteId, atualizarEstudanteRequest);
   }
+
+  excluirEstudante(estudanteId: string): Observable<Estudante> {
+    return this.httpClient.delete<Estudante>(this.urlBaseApi + '/estudantes/' + estudanteId);
+  }
 }

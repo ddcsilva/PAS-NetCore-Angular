@@ -53,4 +53,18 @@ public class EstudanteRepository : IEstudanteRepository
 
         return null;
     }
+
+    public async Task<Estudante> ExcluirEstudanteAsync(Guid estudanteId)
+    {
+        var estudanteEncontrado = await ObterEstudanteAsync(estudanteId);
+
+        if (estudanteEncontrado != null)
+        {
+            _context.Estudantes.Remove(estudanteEncontrado);
+            await _context.SaveChangesAsync();
+            return estudanteEncontrado;
+        }
+
+        return null;
+    }
 }

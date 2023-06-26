@@ -4,13 +4,14 @@ import { Injectable } from '@angular/core';
 import { Observable } from 'rxjs';
 import { Estudante } from '../models/estudante.model';
 import { AdicionarEstudanteRequest } from '../models/adicionar-estudante-request.model';
+import { environment } from 'src/environments/environment';
 
 @Injectable({
   providedIn: 'root'
 })
 export class EstudanteService {
 
-  private urlBaseApi = 'https://localhost:7132';
+  private urlBaseApi = environment.urlBaseApi;
 
   constructor(private httpClient: HttpClient) { }
 

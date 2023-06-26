@@ -1,3 +1,5 @@
+using FluentValidation;
+using FluentValidation.AspNetCore;
 using Microsoft.EntityFrameworkCore;
 using Microsoft.Extensions.FileProviders;
 using PAS.API.Models;
@@ -16,6 +18,10 @@ builder.Services.AddCors((options) => {
 });
 
 builder.Services.AddControllers();
+
+builder.Services.AddFluentValidationAutoValidation();
+builder.Services.AddFluentValidationClientsideAdapters();
+builder.Services.AddValidatorsFromAssemblyContaining<Program>();
 
 builder.Services.AddDbContext<Context>(options => 
     options.UseSqlServer(builder.Configuration.GetConnectionString("DefaultConnection")));

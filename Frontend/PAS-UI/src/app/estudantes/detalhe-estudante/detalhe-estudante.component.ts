@@ -1,10 +1,11 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, ViewChild } from '@angular/core';
 import { EstudanteService } from '../estudante.service';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Estudante } from 'src/app/models/estudante.model';
 import { GeneroService } from 'src/app/services/genero.service';
 import { Genero } from 'src/app/models/genero.model';
 import { MatSnackBar } from '@angular/material/snack-bar';
+import { NgForm } from '@angular/forms';
 
 @Component({
   selector: 'app-detalhe-estudante',
@@ -37,6 +38,8 @@ export class DetalheEstudanteComponent implements OnInit {
   imagemPerfilUrl: string = '';
 
   listaGeneros: Genero[] = [];
+
+  @ViewChild('formularioDetalhesEstudante') formularioDetalhesEstudante?: NgForm;
 
   constructor(
     private readonly estudanteService: EstudanteService,
@@ -81,33 +84,37 @@ export class DetalheEstudanteComponent implements OnInit {
   }
 
   adicionar(): void {
-    this.estudanteService.adicionarEstudante(this.estudante).subscribe({
-      next: (response) => {
-        this.snackbar.open('Estudante adicionado com sucesso!', 'Fechar', {
-          duration: 2000
-        });
+    if (this.formularioDetalhesEstudante?.form.valid) {
+      this.estudanteService.adicionarEstudante(this.estudante).subscribe({
+        next: (response) => {
+          this.snackbar.open('Estudante adicionado com sucesso!', 'Fechar', {
+            duration: 2000
+          });
 
-        setTimeout(() => {
-          this.router.navigateByUrl('estudantes');
-        }, 2000);
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
+          setTimeout(() => {
+            this.router.navigateByUrl('estudantes');
+          }, 2000);
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
+    }
   }
 
   atualizar(): void {
-    this.estudanteService.atualizarEstudante(this.estudante.id, this.estudante).subscribe({
-      next: (response) => {
-        this.snackbar.open('Estudante atualizado com sucesso!', 'Fechar', {
-          duration: 2000
-        });
-      },
-      error: (error) => {
-        console.log(error);
-      }
-    })
+    if (this.formularioDetalhesEstudante?.form.valid) {
+      this.estudanteService.atualizarEstudante(this.estudante.id, this.estudante).subscribe({
+        next: (response) => {
+          this.snackbar.open('Estudante atualizado com sucesso!', 'Fechar', {
+            duration: 2000
+          });
+        },
+        error: (error) => {
+          console.log(error);
+        }
+      })
+    }
   }
 
   excluir(): void {
@@ -128,7 +135,7 @@ export class DetalheEstudanteComponent implements OnInit {
   }
 
   uploadImagem(event: any): void {
-    if(this.estudanteId) {
+    if (this.estudanteId) {
       const arquivo: File = event.target.files[0];
       this.estudanteService.uploadImagem(this.estudanteId, arquivo).subscribe({
         next: (response) => {
@@ -154,4 +161,8 @@ export class DetalheEstudanteComponent implements OnInit {
       this.imagemPerfilUrl = '/assets/images/sem-imagem.png';
     }
   }
+}
+
+function ViewChield(arg0: string): (target: DetalheEstudanteComponent, propertyKey: "formularioDetalhesEstudante") => void {
+  throw new Error('Function not implemented.');
 }

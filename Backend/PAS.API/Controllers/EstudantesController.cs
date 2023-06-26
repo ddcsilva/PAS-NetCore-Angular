@@ -54,21 +54,31 @@ public class EstudantesController : Controller
     [Route("[controller]/{estudanteId:guid}/upload-imagem")]
     public async Task<IActionResult> UploadImagemAsync([FromRoute] Guid estudanteId, IFormFile imagemPerfil)
     {
-        if (!await _estudanteRepository.Existe(estudanteId))
+        var extensoesPermitidas = new List<string> { ".jpg", ".jpeg", ".png" };
+
+        if (imagemPerfil != null && imagemPerfil.Length > 0)
         {
-            return NotFound();
+            var extensaoImagem = Path.GetExtension(imagemPerfil.FileName);
+            if (extensoesPermitidas.Contains(extensaoImagem.ToLower()))
+            {
+                if (await _estudanteRepository.Existe(estudanteId))
+                {
+                    var nomeArquivo = Guid.NewGuid() + Path.GetExtension(imagemPerfil.FileName);
+
+                    var caminhoImagem = await _imagemRepository.Upload(imagemPerfil, nomeArquivo);
+
+                    if (!await _estudanteRepository.AtualizarImagemPerfilAsync(estudanteId, caminhoImagem))
+                    {
+                        return Ok(caminhoImagem);
+                    }
+                    return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar imagem de perfil do estudante.");
+                }
+            }
+
+            return BadRequest("Extensão de imagem inválida.");
         }
 
-        var nomeArquivo = Guid.NewGuid() + Path.GetExtension(imagemPerfil.FileName);
-
-        var caminhoImagem = await _imagemRepository.Upload(imagemPerfil, nomeArquivo);
-
-        if (!await _estudanteRepository.AtualizarImagemPerfilAsync(estudanteId, caminhoImagem))
-        {
-            return StatusCode(StatusCodes.Status500InternalServerError, "Erro ao atualizar imagem de perfil do estudante.");
-        }
-
-        return Ok(caminhoImagem);
+        return NotFound();
     }
 
     [HttpPut]
